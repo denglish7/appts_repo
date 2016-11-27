@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <div class="wrapper">
+            <a href="{% url 'belt_app:index' %}">Dashboard</a>
+            <a href="{% url 'belt_app:logoff' %}">Logout</a>
+            {% for appt in appt_info %}
+            <form class="" action="{% url 'belt_app:update' id=appt.id %}" method="post">
+                {% csrf_token %}
+                Tasks: <input type="text" name="tasks" value="{{appt.tasks}}">
+                <select class="" name="status">
+                    <option value="Pending">Pending</option>
+                    <option value="Done">Done</option>
+                    <option value="Missed">Missed</option>
+                </select>
+                Date: {{appt.date}}
+                Time: <input type="time" name="time" value="{{appt.time}}">
+                <input type="submit" name="" value="Update">
+            </form>
+            {% endfor %}
+        </div>
+    </body>
+</html>

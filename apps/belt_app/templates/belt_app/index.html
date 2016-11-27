@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <div class="Hello">
+            <form class="" action="{%url 'belt_app:logoff' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" name="" value="Log off">
+            </form>
+            <h2>Hello, {{user.first_name}}!</h2>
+        </div>
+        <div class="Today">
+            <h3>Here are your appointments for today, {{today}}:</h3>
+            <table>
+                <tr>
+                    <th>Tasks</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                {% for appt in today_appts %}
+                <tr>
+                    <td>{{appt.tasks}}</td>
+                    <td>{{appt.time}}</td>
+                    <td>{{appt.status}}</td>
+                    <td>
+                        {% if appt.status != "Done"%}
+                        <a href="{% url 'belt_app:my_show' id=appt.id %}">Edit</a>
+                        <a href="{% url 'belt_app:my_destroy' id=appt.id %}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="other_appts">
+            <h3>Your Other appointments:</h3>
+            <table>
+                <tr>
+                    <th>Tasks</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+                {% for appt in other_appts %}
+                <tr>
+                    <td>{{appt.tasks}}</td>
+                    <td>{{appt.date}}</td>
+                    <td>{{appt.time}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="add">
+            <h4>Add Appointment</h4>
+            <form class="" action="{% url 'belt_app:add_appt' %}" method="post">
+                {% csrf_token %}
+                Date: <input type="date" name="date" value="">
+                Time: <input type="time" name="time">
+                Tasks: <input type="text" name="tasks">
+                <input type="submit" value="Add">
+            </form>
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <h3>{{message}}</h3>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </body>
+</html>
